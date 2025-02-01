@@ -14,12 +14,8 @@ function processCoverImage(img) {
                 response.text
             ) {
                 console.log("Valid Response:", response)
-                // Process valid response.
-                let summaryDiv = document.createElement("div")
-                summaryDiv.textContent = response.text
-                summaryDiv.style.cssText =
-                    "font-size: 1rem; padding: 10px; background: #f8f8f8; border: 1px solid #ddd;"
-                img.replaceWith(summaryDiv)
+
+                replaceImageWithText(img, response.text)
             } else if (
                 response &&
                 typeof response === "object" &&
@@ -31,6 +27,39 @@ function processCoverImage(img) {
             }
         }
     )
+}
+
+function pxToRem(px) {
+    const baseFontSize = parseFloat(
+        getComputedStyle(document.documentElement).fontSize
+    )
+    return px / baseFontSize
+}
+
+// Function to process and replace the image
+function replaceImageWithText(img, text) {
+    // Calculate the image dimensions in rem
+    const widthInRem = pxToRem(img.width)
+    const heightInRem = pxToRem(img.height)
+
+    // Create the replacement div
+    const summaryDiv = document.createElement("div")
+    summaryDiv.textContent = text
+
+    // Apply styles to the div
+    summaryDiv.style.width = `${widthInRem}rem`
+    summaryDiv.style.height = `${heightInRem}rem`
+    summaryDiv.style.display = "flex"
+    summaryDiv.style.alignItems = "center"
+    summaryDiv.style.justifyContent = "center"
+    summaryDiv.style.textAlign = "center"
+    summaryDiv.style.padding = "0.5rem"
+    summaryDiv.style.background = "#f8f8f8"
+    summaryDiv.style.border = "1px solid #ddd"
+    summaryDiv.style.overflow = "hidden"
+
+    // Replace the image with the div
+    img.replaceWith(summaryDiv)
 }
 
 // Process all existing cover images on page load.
