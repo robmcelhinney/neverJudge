@@ -1,11 +1,16 @@
 function processCoverImage(img) {
-    console.log("img: ", img)
+    console.log("Processing image: ", img)
     console.log("img.currentSrc: ", img.currentSrc)
     if (img.alt) {
         replaceImageWithText(img, img.alt)
     } else {
+        if (img.currentSrc) {
+            imageUrl = img.currentSrc
+        } else {
+            imageUrl = img.src
+        }
         browser.runtime.sendMessage(
-            { action: "processImage", imageUrl: img.currentSrc },
+            { action: "processImage", imageUrl: imageUrl },
             (response) => {
                 if (browser.runtime.lastError) {
                     console.error(
@@ -18,7 +23,6 @@ function processCoverImage(img) {
                     response.text
                 ) {
                     console.log("Valid Response:", response)
-
                     replaceImageWithText(img, response.text)
                 } else if (
                     response &&
@@ -41,7 +45,7 @@ function pxToRem(px) {
     return px / baseFontSize
 }
 
-// Function to process and replace the image
+// Function to process and replace the image with a text div sized in rem
 function replaceImageWithText(img, text) {
     // Calculate the image dimensions in rem
     const widthInRem = pxToRem(img.width)
@@ -54,8 +58,8 @@ function replaceImageWithText(img, text) {
     // Apply styles to the div
     summaryDiv.style.width = `${widthInRem}rem`
     summaryDiv.style.height = `${heightInRem}rem`
-    summaryDiv.style.display = "inline-block" // Ensures the div behaves like an inline element
-    summaryDiv.style.verticalAlign = "middle" // Aligns the div vertically with surrounding text
+    summaryDiv.style.display = "inline-block" // Behaves like an inline element
+    summaryDiv.style.verticalAlign = "middle"
     summaryDiv.style.alignItems = "center"
     summaryDiv.style.justifyContent = "center"
     summaryDiv.style.textAlign = "center"
@@ -70,15 +74,54 @@ function replaceImageWithText(img, text) {
 
 // Process all existing cover images on page load.
 function processAllCovers() {
-    // Adjust selectors as needed – here we target both common Goodreads cover selectors.
+    // Combined selectors for various Goodreads image types.
     let covers = document.querySelectorAll(
         "img.gr-book__image, img.gr-bookCover, img.ResponsiveImage, img.bookImgSimilar, img.reflected"
     )
     covers.forEach((img) => processCoverImage(img))
 }
 
-if (document.readyState === "complete") {
-    processAllCovers()
-} else {
-    window.addEventListener("load", processAllCovers)
+// IntersectionObserver to watch images as they enter the viewport.
+const observer = new IntersectionObserver(
+    (entries, observer) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                const img = entry.target
+                processCoverImage(img)
+                observer.unobserve(img)
+            }
+        })
+    },
+    {
+        root: null, // The viewport is the root.
+        rootMargin: "0px",
+        threshold: 0.1, // Trigger when at least 10% of the image is visible.
+    }
+)
+
+// Observe all images matching our combined selectors.
+function observeImages() {
+    const images = document.querySelectorAll(
+        "img.gr-book__image, img.gr-bookCover, img.ResponsiveImage, img.bookImgSimilar, img.reflected"
+    )
+    images.forEach((img) => {
+        if (!img.dataset.processed) {
+            // Only observe images not yet processed.
+            observer.observe(img)
+            img.dataset.processed = true
+        }
+    })
 }
+
+// Observe images present at page load.
+if (document.readyState === "complete") {
+    observeImages()
+} else {
+    window.addEventListener("load", observeImages)
+}
+
+// Use MutationObserver to watch for images added dynamically.
+const mutationObserver = new MutationObserver(() => {
+    observeImages()
+})
+mutationObserver.observe(document.body, { childList: true, subtree: true })
