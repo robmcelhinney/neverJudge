@@ -1,32 +1,37 @@
 function processCoverImage(img) {
     console.log("img: ", img)
-    browser.runtime.sendMessage(
-        { action: "processImage", imageUrl: img.currentSrc },
-        (response) => {
-            if (browser.runtime.lastError) {
-                console.error(
-                    "Error processing cover image:",
-                    browser.runtime.lastError.message
-                )
-            } else if (
-                response &&
-                typeof response === "object" &&
-                response.text
-            ) {
-                console.log("Valid Response:", response)
+    console.log("img.currentSrc: ", img.currentSrc)
+    if (img.alt) {
+        replaceImageWithText(img, img.alt)
+    } else {
+        browser.runtime.sendMessage(
+            { action: "processImage", imageUrl: img.currentSrc },
+            (response) => {
+                if (browser.runtime.lastError) {
+                    console.error(
+                        "Error processing cover image:",
+                        browser.runtime.lastError.message
+                    )
+                } else if (
+                    response &&
+                    typeof response === "object" &&
+                    response.text
+                ) {
+                    console.log("Valid Response:", response)
 
-                replaceImageWithText(img, response.text)
-            } else if (
-                response &&
-                typeof response === "object" &&
-                response.error
-            ) {
-                console.error("Error from ML engine:", response.error)
-            } else {
-                console.error("Unexpected response:", response)
+                    replaceImageWithText(img, response.text)
+                } else if (
+                    response &&
+                    typeof response === "object" &&
+                    response.error
+                ) {
+                    console.error("Error from ML engine:", response.error)
+                } else {
+                    console.error("Unexpected response:", response)
+                }
             }
-        }
-    )
+        )
+    }
 }
 
 function pxToRem(px) {
@@ -49,7 +54,8 @@ function replaceImageWithText(img, text) {
     // Apply styles to the div
     summaryDiv.style.width = `${widthInRem}rem`
     summaryDiv.style.height = `${heightInRem}rem`
-    summaryDiv.style.display = "flex"
+    summaryDiv.style.display = "inline-block" // Ensures the div behaves like an inline element
+    summaryDiv.style.verticalAlign = "middle" // Aligns the div vertically with surrounding text
     summaryDiv.style.alignItems = "center"
     summaryDiv.style.justifyContent = "center"
     summaryDiv.style.textAlign = "center"
@@ -66,7 +72,7 @@ function replaceImageWithText(img, text) {
 function processAllCovers() {
     // Adjust selectors as needed – here we target both common Goodreads cover selectors.
     let covers = document.querySelectorAll(
-        "img.gr-book__image, img.gr-bookCover, img.ResponsiveImage"
+        "img.gr-book__image, img.gr-bookCover, img.ResponsiveImage, img.bookImgSimilar, img.reflected"
     )
     covers.forEach((img) => processCoverImage(img))
 }
