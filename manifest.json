@@ -1,0 +1,29 @@
+    {
+        "manifest_version": 2,
+        "name": "Goodreads Cover Describer",
+        "version": "1.0",
+        "description": "Replaces Goodreads book cover images with AI-generated descriptions",
+        "optional_permissions": [
+            "trialML"
+        ],
+        "permissions": [
+            "menus",
+            "activeTab",
+            "scripting"
+        ],
+        "background": {
+            "scripts": [
+                "background.js"
+            ]
+        },
+        "content_scripts": [
+            {
+                "matches": [
+                    "https://www.goodreads.com/*"
+                ],
+                "js": [
+                    "content.js"
+                ]
+            }
+        ]
+    }
