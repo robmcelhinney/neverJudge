@@ -20,8 +20,6 @@ browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
             let result = await browser.trial.ml.runEngine({
                 args: [message.imageUrl],
             })
-            console.log("Result:", result)
-            console.log("Result generated_text:", result[0].generated_text)
             sendResponse({ text: result[0].generated_text })
         } catch (error) {
             console.error("ML processing failed:", error)

@@ -22,7 +22,6 @@ function processCoverImage(img) {
                     typeof response === "object" &&
                     response.text
                 ) {
-                    console.log("Valid Response:", response)
                     replaceImageWithText(img, response.text)
                 } else if (
                     response &&
