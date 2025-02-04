@@ -1,7 +1,7 @@
     {
         "manifest_version": 2,
-        "name": "Goodreads Cover Describer",
-        "version": "1.0",
+        "name": "NeverJudge",
+        "version": "1.0.0",
         "description": "Replaces Goodreads book cover images with AI-generated descriptions",
         "optional_permissions": [
             "trialML"
@@ -25,5 +25,12 @@
                     "content.js"
                 ]
             }
-        ]
+        ],
+        "browser_action": {
+            "default_icon": {
+                "16": "icons/icon16.png",
+                "48": "icons/icon48.png",
+                "128": "icons/icon128.png"
+            }
+        }
     }
