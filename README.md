@@ -24,7 +24,7 @@ Or to download it and run it manually
         - Click "Load Temporary Add-on".
         - Select the `manifest.json` file from this project.
         - Click on `neverJudge` extension and `Permissions` tab
-        - Allow `ml` permission.
+        - Allow `Download and run AI models on your device` permission.
 
 3. Start exploring books without judging by their covers! ✨
 
