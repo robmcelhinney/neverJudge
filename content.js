@@ -75,7 +75,7 @@ function replaceImageWithText(img, text) {
 function processAllCovers() {
     // Combined selectors for various Goodreads image types.
     let covers = document.querySelectorAll(
-        "img.gr-book__image, img.gr-bookCover, img.ResponsiveImage, img.bookImgSimilar, img.reflected"
+        "img.gr-book__image, img.gr-bookCover, img.ResponsiveImage, img.bookImgSimilar, img.reflected, img.bookImage"
     )
     covers.forEach((img) => processCoverImage(img))
 }
