@@ -1,3 +1,6 @@
+const listOfCovers =
+    'img.gr-book__image, img.gr-bookCover, img.ResponsiveImage, img.bookImgSimilar, img.reflected, img.bookImage, img[id*="cover_review"]'
+
 function processCoverImage(img) {
     console.log("Processing image: ", img)
     console.log("img.currentSrc: ", img.currentSrc)
@@ -74,9 +77,7 @@ function replaceImageWithText(img, text) {
 // Process all existing cover images on page load.
 function processAllCovers() {
     // Combined selectors for various Goodreads image types.
-    let covers = document.querySelectorAll(
-        "img.gr-book__image, img.gr-bookCover, img.ResponsiveImage, img.bookImgSimilar, img.reflected, img.bookImage"
-    )
+    let covers = document.querySelectorAll(listOfCovers)
     covers.forEach((img) => processCoverImage(img))
 }
 
@@ -100,9 +101,7 @@ const observer = new IntersectionObserver(
 
 // Observe all images matching our combined selectors.
 function observeImages() {
-    const images = document.querySelectorAll(
-        "img.gr-book__image, img.gr-bookCover, img.ResponsiveImage, img.bookImgSimilar, img.reflected"
-    )
+    const images = document.querySelectorAll(listOfCovers)
     images.forEach((img) => {
         if (!img.dataset.processed) {
             // Only observe images not yet processed.
