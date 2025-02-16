@@ -62,7 +62,7 @@ This project is licensed under the MIT License.
 Uses Local AI to get image based on text
 ![screenshot The Witches](img/screenshot-witches.png)
 
-Original
+Same page - different readers also enjoyed
 ![screenshot The Witches](img/screenshot-witches-og.png)
 
 Uses alt-text where available
