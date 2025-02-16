@@ -1,9 +1,14 @@
-const listOfCovers =
-    'img.gr-book__image, img.gr-bookCover, img.ResponsiveImage, img.bookImgSimilar, img.reflected, img.bookImage, img[id*="cover_review"]'
+const listOfCovers = "img"
 
 function processCoverImage(img) {
     console.log("Processing image: ", img)
     console.log("img.currentSrc: ", img.currentSrc)
+    if (
+        img.src.includes("/assets/layout/") ||
+        img.src.includes("goodreads.com/users")
+    ) {
+        return
+    }
     if (img.alt) {
         replaceImageWithText(img, img.alt)
     } else {
