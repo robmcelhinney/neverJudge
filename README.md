@@ -55,6 +55,19 @@ Or to download it and run it manually
 
 This project is licensed under the MIT License.
 
+---
+
+## Screenshot
+
+Uses Local AI to get image based on text
+![screenshot The Witches](img/screenshot-witches.png)
+
+Original
+![screenshot The Witches](img/screenshot-witches-og.png)
+
+Uses alt-text where available
+![screenshot Most Read History this week](img/screenshot-most-read.png)
+
 ## Acknowledgments 🙌
 
 -   Mozilla for providing the ML inference API in Firefox Nightly.
