@@ -2,6 +2,9 @@
 
 **Never Judge** is a Firefox (Nightly) extension that replaces Goodreads book cover images with AI-generated descriptions. It's perfect for those who want to explore books without being influenced by their covers. (Only tested in Firefox Nightly)
 
+![20250328_1922_Animated Book Courtroom_simple_compose_01jqf39qn7eqds60w1rjw24zg9](https://github.com/user-attachments/assets/edec4d92-8693-404e-82bc-b754ff76dd5f)
+
+
 ## Installation 🛠️
 
 1. Go to https://github.com/robmcelhinney/neverJudge/releases and click on .xpi file.
